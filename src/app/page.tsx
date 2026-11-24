@@ -470,6 +470,7 @@ export default function Home() {
 
     async function loadProjects() {
       let localProjects: Project[] = [];
+      let redirecting = false;
 
       try {
         const { data: sessionData, error: sessionError } =
@@ -477,12 +478,34 @@ export default function Home() {
 
         if (sessionError) throw sessionError;
 
-        const user = sessionData.session?.user;
-
-        if (!user) {
+        if (!sessionData.session) {
+          redirecting = true;
           router.replace("/login");
           return;
         }
+
+        const { data: userData, error: userError } =
+          await supabase.auth.getUser();
+
+        if (userError) {
+          if (userError.status === 401) {
+            redirecting = true;
+            await supabase.auth.signOut();
+            router.replace("/login");
+            return;
+          }
+
+          throw userError;
+        }
+
+        if (!userData.user) {
+          redirecting = true;
+          await supabase.auth.signOut();
+          router.replace("/login");
+          return;
+        }
+
+        const user = userData.user;
 
         const userStorageKey = `${STORAGE_KEY}-${user.id}`;
 
@@ -678,7 +701,7 @@ export default function Home() {
         setProjects(localProjects);
         setStatus("Supabase Error: " + errorMessage);
       } finally {
-        if (active) {
+        if (active && !redirecting) {
           setAuthChecking(false);
           setLoaded(true);
         }
