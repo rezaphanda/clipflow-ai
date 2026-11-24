@@ -33,11 +33,8 @@ export default function LoginPage() {
       router.push("/");
       router.refresh();
     } catch (error: unknown) {
-      setMessage(
-        error instanceof Error
-          ? error.message
-          : "Login failed. Please try again."
-      );
+      console.error("Login error:", error);
+      setMessage("Login gagal. Periksa email dan password, lalu coba lagi.");
     } finally {
       setLoading(false);
     }

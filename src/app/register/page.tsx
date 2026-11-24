@@ -22,7 +22,7 @@ export default function RegisterPage() {
     }
 
     if (password.length < 12) {
-      setMessage("Password must be at least 6 characters.");
+      setMessage("Password must be at least 12 characters.");
       return;
     }
 
@@ -48,11 +48,8 @@ export default function RegisterPage() {
         );
       }
     } catch (error: unknown) {
-      setMessage(
-        error instanceof Error
-          ? error.message
-          : "Registration failed. Please try again."
-      );
+      console.error("Registration error:", error);
+      setMessage("Registrasi gagal. Periksa data yang dimasukkan dan coba lagi.");
     } finally {
       setLoading(false);
     }
