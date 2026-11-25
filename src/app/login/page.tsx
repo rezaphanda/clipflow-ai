@@ -64,6 +64,7 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="you@example.com"
+              autoComplete="email"
               className="w-full rounded-lg border border-gray-700 bg-[#080b14] px-4 py-3 text-white outline-none focus:border-blue-500"
             />
           </div>
@@ -80,6 +81,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="Enter your password"
+                autoComplete="current-password"
                 className="w-full rounded-lg border border-gray-700 bg-[#080b14] px-4 py-3 pr-12 text-white outline-none focus:border-blue-500"
               />
 
@@ -127,6 +129,15 @@ export default function LoginPage() {
                 )}
               </button>
             </div>
+
+            <div className="mt-3 flex justify-end">
+              <a
+                href="/forgot-password"
+                className="text-sm font-medium text-blue-400 transition hover:text-blue-300"
+              >
+                Forgot Password?
+              </a>
+            </div>
           </div>
 
           <button
@@ -139,7 +150,10 @@ export default function LoginPage() {
         </form>
 
         {message && (
-          <div className="mt-5 rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-300">
+          <div
+            role="alert"
+            className="mt-5 rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-300"
+          >
             {message}
           </div>
         )}
